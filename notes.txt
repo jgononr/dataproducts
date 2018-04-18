@@ -1,0 +1,23 @@
+fluidPage(
+    fluidRow(
+        column(3),
+        column(5, sliderInput(...))
+    ),
+    fluidRow(
+        column(4, offset = 8, plotOutput("hist"))
+    )
+    tabsetPanel( ## Horizontal
+        tabPanel("tab1", "contents"),
+        tabPanel("tab2", "contents"),
+        tabPanel("tab3", "contents")
+    )
+
+    navlistPanel( ## Vertical
+        tabPanel(...)
+    )
+
+    sidebarLayout(
+        sidebarPanel(),
+        mainPanel()
+    )
+)

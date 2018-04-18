@@ -8,16 +8,15 @@
 #
 
 library(shiny)
+library(DT)
 library(ISLR)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
 
-  output$distPlot <- renderPlot({
-
-    # generate bins based on input$bins from ui.R
-    plot(Default)
-
+  output$dataset <- DT::renderDataTable({
+      DT::datatable({Auto})
   })
 
+  session$onSessionEnded(stopApp)
 })
