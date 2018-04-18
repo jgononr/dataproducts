@@ -1,0 +1,10 @@
+name: shinyapp
+title:
+username:
+account: xavigo
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 325101
+bundleId: 1325373
+url: https://xavigo.shinyapps.io/shinyapp/
+when: 1524057232.09846
