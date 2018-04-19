@@ -16,10 +16,15 @@ shinyUI(fluidPage(
   titlePanel("Modelling Shiny App"),
 
   # Sidebar with a slider input for number of bins
-  sidebarLayout(position = "right",
+  sidebarLayout(position = "right", fluid = FALSE,
     sidebarPanel(
-        navlistPanel(
-            tabPanel("Model", "Content 1"),
+        tabsetPanel(
+            tabPanel("Model",
+                     sliderInput("sl_hp","Horsepower",
+                                 min = 0, max = max(Auto$horsepower),
+                                 value = 0),
+                     textInput("ti_hp", "HP")
+                     ),
             tabPanel("Panel 2", "Content 2"),
             tabPanel("Panel 3", "Content 3")
         )
@@ -29,7 +34,9 @@ shinyUI(fluidPage(
     mainPanel(
         tabsetPanel(
             tabPanel("Data", DT::dataTableOutput("dataset")),
-            tabPanel("Plot", "Plot Panel Content")
+            tabPanel("Plot",
+                     plotOutput("plot")
+            )
         )
     )
   )

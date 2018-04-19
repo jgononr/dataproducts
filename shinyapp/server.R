@@ -14,9 +14,21 @@ library(ISLR)
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
 
-  output$dataset <- DT::renderDataTable({
-      DT::datatable({Auto})
-  })
+    model <- lm(mpg~horsepower, data = Auto)
 
-  session$onSessionEnded(stopApp)
+    output$plot <- renderPlot({
+        plot(y = Auto$mpg, x = Auto$horsepower,
+             ylab = "Miles per Gallon", xlab = "Horsepower")
+        abline(model, col = "red", lwd = 2)
+    })
+
+    output$sl_hp <- ({renderText(input$ti_hp)})
+
+    output$ti_hp <- ({renderText(input$sl_hp)})
+
+    output$dataset <- DT::renderDataTable({
+        DT::datatable({Auto})
+})
+
+  ## session$onSessionEnded(stopApp)
 })
