@@ -5,6 +5,8 @@ account: xavigo
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 325101
-bundleId: 1325373
+bundleId: 1332499
 url: https://xavigo.shinyapps.io/shinyapp/
-when: 1524057232.09846
+when: 1524436633.39251
+asMultiple: FALSE
+asStatic: FALSE

@@ -40,20 +40,23 @@ shinyServer(function(input, output, session) {
     })
 
     plotmodel <- reactive({
-        model.lm <- lm(mpg~horsepower, data = Auto[trainset(),])
-        model.ss <- smooth.spline(Auto[trainset(), ]$horsepower,
-                      Auto[trainset(), ]$mpg,
+        df <- Auto[trainset(),]
+        model.lm <- lm(mpg~horsepower, data = df)
+        model.ss <- smooth.spline(df$horsepower,df$mpg,
                       df = input$model_ss.df, nknots = input$model_ss.knots)
         deg1 <- input$model1_poly.degree
         deg2 <- input$model2_poly.degree
         model1.lm3 <- lm(mpg ~ poly(horsepower, degree=deg1),
-                         data=Auto[trainset(),])
+                         data=df)
         model2.lm3 <- lm(mpg ~ poly(horsepower, degree=deg2),
-                         data=Auto[trainset(),])
+                         data=df)
         polydata1 <- polydata2 <- data.frame(horsepower = seq(
                                                 min(df$horsepower),
                                                 max(df$horsepower),
                                                 length.out = 100))
+        modelplot <- data.frame(horsepower = seq(min(df$horsepower),
+                                                 max(df$horsepower),
+                                                 length.out = 100))
         polydata1$mpg <- predict(model1.lm3, newdata = modelplot)
         polydata2$mpg <- predict(model2.lm3, newdata = modelplot)
         if (input$model1_plot) {
