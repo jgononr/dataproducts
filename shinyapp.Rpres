@@ -1,0 +1,30 @@
+Data Products Final Project: shinyapp
+========================================================
+author: Javier González Onrubia
+date: April 2nd 2018
+autosize: true
+
+The App
+========================================================
+
+This app uses the `Auto` dataset from the `ISLR` package
+as basis for having a user interface for data selection,
+model selection and
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+Slide With Code
+========================================================
+
+```{r}
+summary(cars)
+```
+
+Slide With Plot
+========================================================
+
+```{r, echo=FALSE}
+plot(cars)
+```
