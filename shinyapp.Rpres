@@ -19,7 +19,6 @@ autosize: true
 
 The App
 ========================================================
-<div class="footer">Data Products Final Project: shinyapp</div>
 This app uses the `Auto` dataset from the `ISLR` package
 to model the relationship between `horsepower` and `mpg`.
 
