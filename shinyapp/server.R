@@ -44,10 +44,12 @@ shinyServer(function(input, output, session) {
         model.ss <- smooth.spline(Auto[trainset(), ]$horsepower,
                       Auto[trainset(), ]$mpg,
                       df = input$model_ss.df, nknots = input$model_ss.knots)
-        model1.lm3 <- lm(mpg ~ poly(horsepower, degree=input$model1_poly.degree),
-                        data=Auto)
-        model2.lm3 <- lm(mpg ~ poly(horsepower, degree=input$model2_poly.degree),
-                         data=Auto)
+        deg1 <- input$model1_poly.degree
+        deg2 <- input$model2_poly.degree
+        model1.lm3 <- lm(mpg ~ poly(horsepower, degree=deg1),
+                         data=Auto[trainset(),])
+        model2.lm3 <- lm(mpg ~ poly(horsepower, degree=deg2),
+                         data=Auto[trainset(),])
         polydata1 <- polydata2 <- data.frame(horsepower = seq(
                                                 min(df$horsepower),
                                                 max(df$horsepower),
@@ -61,16 +63,40 @@ shinyServer(function(input, output, session) {
                 abline(model.lm,
                        col = input$model1_colorsel, lwd = input$model1_width,
                        lty = input$model1_linetype)
+                model1 <- model.lm
             } else if (sel == 2) {
                 ## Polynomial regression
                 lines(polydata1$horsepower, polydata1$mpg,
                       col = input$model1_colorsel, lwd = input$model1_width,
                       lty = input$model1_linetype)
+                model1 <- model1.lm3
             } else {
                 ## Smooth spline
                 lines(model.ss,
                       col = input$model1_colorsel, lwd = input$model1_width,
                       lty = input$model1_linetype)
+                model1 <- model.ss
+            }
+            if (sel != 3) {
+                output$model1_pred <- renderText({
+                    paste("Model 1 prediction:",
+                          round(predict(model1,
+                                        newdata = data.frame(horsepower = input$plot_horsepower))
+                                ,digits = 2), "mpg")
+                })
+                points(input$plot_horsepower,
+                       predict(model1, newdata = data.frame(horsepower = input$plot_horsepower)),
+                       cex = 2, pch = 18, col = input$model1_colorsel)
+            } else {
+                pred <- predict(model1,
+                                newdata = data.frame(horsepower = input$plot_horsepower))
+                pred <- pred$y[sum(pred$x < input$plot_horsepower)]
+                output$model1_pred <- renderText({
+                    paste("Model 1 prediction:",
+                          round(pred ,digits = 2), "mpg")
+                })
+                points(input$plot_horsepower, pred, cex = 2, pch = 18,
+                       col = input$model1_colorsel)
             }
         }
         if (input$model2_plot) {
@@ -80,18 +106,40 @@ shinyServer(function(input, output, session) {
                 abline(model.lm,
                        col = input$model2_colorsel, lwd = input$model2_width,
                        lty = input$model2_linetype)
-
+                model2 <- model.lm
             } else if (sel == 2) {
                 ## Polynomial regression
-                cat(file = stderr(), "model1_poly_change\n")
                 lines(polydata2$horsepower, polydata2$mpg,
                       col = input$model2_colorsel, lwd = input$model2_width,
                       lty = input$model2_linetype)
+                model2 <- model2.lm3
             } else {
                 ## Smooth spline
                 lines(model.ss,
                       col = input$model2_colorsel, lwd = input$model2_width,
                       lty = input$model2_linetype)
+                model2 <- model.ss
+            }
+            if (sel != 3) {
+              output$model2_pred <- renderText({
+                paste("Model 2 prediction:",
+                      round(predict(model2,
+                                    newdata = data.frame(horsepower = input$plot_horsepower))
+                            ,digits = 2), "mpg")
+              })
+              points(input$plot_horsepower,
+                     predict(model2, newdata = data.frame(horsepower = input$plot_horsepower)),
+                     cex = 2, pch = 18, col = input$model2_colorsel)
+            } else  {
+                pred <- predict(model2,
+                                newdata = data.frame(horsepower = input$plot_horsepower))
+                pred <- pred$y[sum(pred$x < input$plot_horsepower)]
+                output$model2_pred <- renderText({
+                    paste("Model 2 prediction:",
+                          round(pred ,digits = 2), "mpg")
+                })
+                points(input$plot_horsepower, pred, cex = 2, pch = 18,
+                       col = input$model2_colorsel)
             }
         }
     })

@@ -38,11 +38,11 @@ shinyUI(fluidPage(
                          conditionalPanel(
                              condition = "input.model1_modelsel == '2'",
                              helpText("Use the slider to select the polynomial",
-                                      "degree. E.g. '1' for linear regression",
+                                      "degree. E.g. ",
                                       "'2' for quadratic, '3' for cubic..."),
                              sliderInput("model1_poly.degree",
                                          label = "Polynomial degree",
-                                         min = 1, max = 10, value = 2)
+                                         min = 2, max = 10, value = 2)
                          ),
                          conditionalPanel(
                              condition = "input.model1_modelsel == '3'",
@@ -98,11 +98,11 @@ shinyUI(fluidPage(
                          conditionalPanel(
                              condition = "input.model2_modelsel == '2'",
                              helpText("Use the slider to select the polynomial",
-                                      "degree. E.g. '1' for linear regression",
+                                      "degree. E.g. ",
                                       "'2' for quadratic, '3' for cubic..."),
                              sliderInput("model2_poly.degree",
                                          label = "Polynomial degree",
-                                         min = 1, max = 10, value = 2)
+                                         min = 2, max = 10, value = 2)
                          ),
                          conditionalPanel(
                              condition = "input.model2_modelsel == '3'",
@@ -210,7 +210,19 @@ shinyUI(fluidPage(
         mainPanel(
             tabsetPanel(
                 tabPanel("Plot",
-                         plotOutput("plot")
+                         helpText("Use the sidebar to select and plot one",
+                                  "of the three available models.",
+                                  "The configuration tab allows you to select",
+                                  "which data will be used for training the
+                                  model and testing it"),
+                         plotOutput("plot"),
+                         helpText("Use the slider to show the predicted value",
+                                  "for each selected model based on horsepower"),
+                         sliderInput("plot_horsepower",
+                                     label = "Horsepower",
+                                     min = 50, max = 250, value = 50),
+                         textOutput("model1_pred"),
+                         textOutput("model2_pred")
                 ),
                 tabPanel("Data", DT::dataTableOutput("dataset"))
             )
